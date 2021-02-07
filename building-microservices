@@ -1,0 +1,303 @@
+Title: Building Microservices
+Subtitle: Designing Fine-Grained Systems
+Author: Sam Newman
+Publisher: O'Reilly
+
+/Microservices/
+	"treat every check-in as a release candidate"
+	Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture/
+	"a microservice is something that can be rewritten in two weeks"
+	"the smaller the service, the more you maximize the benefits AND downsides of microservice architecture (MSA)"
+	"all communication between the services themselves are via network calls"
+
+/The Evolutionary Architect/
+	"think of our role more as town planners than architects"
+	"avoid the urge to overspecify every last thing"
+	Goals -> Principles -> Practices
+	The Twelve-Factor App: https://12factor.net/
+	"one person's principles are another's practices"
+	"the practices will change fairly regularly, whereas the principles remain fairly static"
+	Hystrix: "a latency and fault tolerance library" developed by Netflix: https://github.com/Netflix/Hystrix
+
+# TODO: seems like I may not have paid much attention to this chapter
+/How To Model Services/
+	"having an existing codebase that you want to decompose into microservices is easier than going directly to microservices"
+
+/Integration/
+	DB Integration Anti-Pattern: 
+		having consumers directly access db
+		"db integration makes it easy for services to share data, but does nothing about sharing behavior"
+	Synchronous vs Asynchronous: 
+		"two modes of communication can enable two different styles of collaboration: request/response or event-driven"
+	Orchestration vs Choreography: 
+		"with orchestration, we rely on a central brain; with choreography, we inform each part of the system of its job"
+		Downside to orchestration: "central brain becomes too much of a governing authority"
+		Downside to choreography: "explicit view of the business process is now only implicitly reflected in our system"
+	RPC vs REST: 
+		Upside to RPC: hides the complexity of a remote call 
+		Downside to RPC: potentially hides too much
+	Richardson Maturity Model: https://martinfowler.com/articles/richardsonMaturityModel.html
+	"keep your middleware dumb, and keep the smarts in the endpoints"
+	Competing Consumer Pattern: 
+		"multiple worker instances compete against each other for jobs"
+		can use a message broker to ensure no duplicate work is done
+	"don't violate DRY within a microservice, but be relaxed about violating DRY across all services"
+	"if the same people create both server and client APIs, there is danger that logic that should exist on the server starts leaking into the client"
+	Tolerant Reader Pattern: https://martinfowler.com/bliki/TolerantReader.html
+	"with semantic versioning, each version number is of the form MAJOR.MINOR.PATCH. 
+	 MAJOR is incremented when backward incompatible changes are made.
+	 MINOR is incremented when new (back compatible) functionality changes are made.
+	 PATCH is incremented when bug fixes to existing functionality are made.
+	"Build if it is unique to what you do, and can be considered a strategic asset; buy if your use of the tool isn't that special"
+	Strangler Application Pattern: https://martinfowler.com/bliki/StranglerFigApplication.html
+	
+	/Summary/
+
+/Splitting the Monolith/
+	"During this process we can use code to analyze the dependencies between these packages too. Our code should represent our organization, so our packages representing the bounded contexts in our organization should interact in the same way the real-life organizational groups in our domain interact."
+	
+	Solving tangled dependencies: "we want to pull out the seam that is least depended on if we can"
+
+	Breaking down monolothic service&schema: "I would recommend that you split out the schema but keep the service together before splitting the application code out into separate microservices"
+	
+	Terminology: eventual consistency, compensating transaction
+	
+	"The most common algorithm for handling distributed transactions - especially short-lived transactions, as in the case of handling our customer order - is to use a two-phase commit. With 2PC, first comes the voting phase - this is where each participant in the distributed transaction tells the transaction manager whether it thinks its local transaction can go ahead. If the transaction manager gets a yes vote from all participants, then it tells them all to go ahead and perform their commits. A single no vote is enough for the transaction manager to send out a rollback to all parties."
+	
+	"Rather than have the reporting system pull the data, we could instead have the data pushed to the reporting system. [...] a standalone program that directly accesses the database of the service that is the source of the data, and pumps it into a reporting db. [...] We try to reduce the problems with coupling to the services schema by havin gthe same team that manages the service also manage the pump. [...] version-control these together, and have builds of the data pump created as an additional artifact as part of the build of the service itself."
+	
+	/Summary/
+
+/Deployment/
+[... probably need to do more reading in this chapter ...]
+	
+	/Custom Images/
+	"We also want to avoid keeping our machines around for too long, as we don't want to allow for too much configuration drift."
+
+	/Images as Artifacts/
+	"So we can create VM images that bake in dpdc's to speed up feedback, but why stop there? We could go further, bake our svc into the img itself, and adopt the model of our svc artifact being an img. Now when we launch our img, our svc is there ready to go. [...] This also becomes a really neat way to implement another deployment concept, the immutable server." 
+	
+	/Immutable Servers/
+	Problem: "By storing all our cfg in src ctrl, we are trying to ensure that we can auto-reproduct svcs and hopefully entire envs at will. But once we run our deply process, what happens if someone comes along and changes things? This is known as configuration drift."
+	
+	Solution: "Ensure that no changes are ever made to a running server. Instead, any change, no matter how small, has to go through a build pipeline in order to create a new machine."
+
+	TODO: look into Vagrant
+	
+	Docker: "Docker can also alleviate some of the downsides of running lots of svcs locally for dev and test purposes. Rather than using Vagrant to host multiple indepdendent VMs, each one containing its own svc, we can hose a single VM in Vagrant that runs a Docker instance. We then use Vagrant to set up and tear down the Docker platform itself, and use Docker for fast provisioning of individual svcs."
+
+[... definitely need to do more reading in this chapter ...]
+
+	/Summary/
+
+/Testing/
+	/Types of Tests/
+	See Figure 7.1. [TODO: need way to include images in my notes - simple text is not sufficient]
+		
+	Acceptance Testing: Did we build the right thing? Automated. Supports programming. Business facing.
+	Exploratory Testing: Usability - how can I break the system? Manual. Critique product. Business facing.
+	Property Testing: Response time, scalability, performance, security. Tools. Critique product. Technology facing.
+	Unit Testing: Did we build it right? Automated. Supports programming. Technology facing.
+		
+	/Trade-Offs/ (between the different types of tests)
+	"When broader-scoped tests fail, we will try to write fast unit test to catch the problem in the future."
+	
+	/How Many?/
+	"A good rule of thumb is that you probably want an order of magnitude more tests as you descend the pyramid."
+	
+	/Mocking or Stubbing/
+	"When using a mock, I go further and make sure the call was made. If the expected call is not made, the test fails."
+
+	/Flaky and Brittle Tests/
+	"When we detect flaky tests, it is essential that w edo our best to remove them."
+	
+	See: "Eradicating Non-Determinism in Tests" by Martin Fowler
+	https://martinfowler.com/articles/nonDeterminism.html
+	
+	/Who Writes These Tests?/
+	Q: "[...] end-to-end tests are now effectively shared between the teams, who writes and looks after these tests?"
+	A1: the tests can go ignored and people pass the buck
+	A2: an explosion of test cases because no joint knowledge
+	A3: "Sometimes orgs react by having a dedicated team write these tests. This can be disastrous. The team developing the software becomes increasingly distant from the tests for its code."
+	A4: "treat the end-to-end test suite as a shared codebase, but with joint ownership"
+	
+	/The Metaversion/
+	Q: "All I know all these services at these versions work together, so why not deploy them all together?" 
+	Q': "Why not use a version number for the whole system?"
+	A: "In doing so, we cede one of the main advantages of msvcs: the ability to deploy one svc by itself, independently of other svcs."
+	A': "Before long, nicely separate svcs become increasingly tangled with others, and you never notice as you never try to deploy them by themselves."
+
+	/Test Journeys, Not Stories/
+	"the worst case scenario can result in Cartesian-like explosion in the scenarios under test"
+	"Show me a codebase where every new story results in an new end-to-end test, and I'll show you a bloated test suite that has poor feedback cycles and huge overlaps in test coverage."
+	"By focusing on a small number [of integration tests] (and I mean small: very low double digits even for complex systems"
+	
+	/Consumer-Driven Tests to the Rescue/
+	consumer-driven contract (CDC)
+	"If done right, these CDCs should be run as part of the CI build of the producer, ensuring that it never gets deploye dif it breaks one of these contracts."
+	"From a scope point of view, they sit at the same level in the test pyramid as service tests"
+	"So with CDCs, we can identify a breaking change prior to our software going into production without having to use a potentially expensive end-to-end test."
+	
+	/Pact/
+	"Pact is a consumer-driventesting tool that was originally developed in-house..." - hocking their own product.
+	
+	/It's About Conversations/
+	/So Should You Use End-to-End Tests?/
+	/Testing After Production/
+	/Separating Deployment from Release/
+	/Canary Releasing/
+	/Mean Time to Repair Over Mean Time Between Failures?/
+	/Cross-Functional Testing/
+	/Performance Tests/
+	[... nothing highlighted here, might need to re-read ...]
+	/Summary/
+
+/Monitoring/
+	/Single Service, Single Server/
+	"We may even get advanced and use logrotate to move old logs out of the way..." - need to look into logrotate
+	
+	/Single Service, Multiple Servers/
+	/Multiple Services, Multiple Servers/
+	[... nothing highlighted here, might need to re-read ...]
+	
+	/Logs, Logs, and Yet More Logs.../
+	"logstash can parse multiple logfile formats and send them to downstream systems" 
+	
+	/Metric Tracking Across Multiple Services/
+	"Graphite exposes a very simple API and allows you to send metrics in real time"
+
+	/Service Metrics/
+	"I would strongly suggest having your services expose basic metrics themselves. At a bare minimum, for a web service you should probably expose metrics like response times and error rates."
+	
+	/Synthetic Monitoring/
+		/Implementing Semantic Monitoring/
+	/Correlation IDs/
+	/The Cascade/
+	/Standardization/
+	/Consider the Audience/
+	/The Future/	
+	/Summary/
+
+/Security/
+	/Authentication and Authorization/
+		/Common Single Sign-On Implementations/
+		/Single Sign-On Gateway/
+		/Fine-Grained Authorization/
+	/Service-to-Service Authentication and Authorization/
+		/Allow Everything Inside the Perimeter/
+		/HTTP(S) Basic Authentication/
+		/Use SAML or OpenID Connect/
+		/Client Certificates/
+		/HMAC Over HTTP/
+		/API Keys/
+		/The Deputy Problem/
+	/Securing Data at Rest/
+		/Go with the Well Known/
+		/It's All About the Keys/
+		/Pick Your Targets/
+		/Decrypt on Demand/
+		"Encrypt data when you first see it. Only decrypt on demand, and ensure that data is never stored anywhere."
+		/Encrypt Backups/
+	/Defense in Depth/
+		/Firewalls/
+		/Logging/
+		/Intrusion Detection (and Prevention) System/
+		/Network Segregation/
+		/Operating System/
+	/A Worked Example/
+	/Be Frugal/
+	/The Human Element/
+	/The Golden Rule/
+	/Baking Security In/
+	/External Verification/
+	/Summary/
+
+/Conway's Law and System Design/
+	/Evidence/
+		/Loose and Tightly Coupled Organizations/
+		/Windows Vista/
+	/Netflix and Amazon/
+	/What Can We Do With This?/
+	/Adapting to Communication Pathways/
+	/Service Ownership/
+	/Drivers for Shared Services/
+		/Too Hard to Split/
+		/Feature Teams/
+		/Delivery Bottlenecks/
+	/Internal Open Source/
+		/Role of the Custodians/
+		/Maturity/
+		/Tooling/
+	/Bounded Contexts and Team Structures/
+	/The Orphaned Service?/
+	/Case Study: RealEstate.com.au/
+	/Conway's Law in Reverse/
+	/People/
+	/Summary/
+
+/Microservices at Scale/
+	/Failure is Everywhere/
+	/How Much is Too Much?/
+	/Degrading Functionality/
+	/Architectural Safety Measures/
+	/The Antifragile Organization/
+		/Timeouts/
+		/Circuit Breakers/
+		/Bulkheads/
+		/Isolation/
+	/Idempotency/
+	/Scaling/
+		/Go Bigger/
+		/Splitting Workloads/
+		/Spreading Your Risk/
+		/Load Balancing/
+		/Worker-Based Systems/
+		/Starting Again/
+	/Scaling Databases/
+		/Availability of Service Versus Durability of Data/
+		/Scaling for Reads/
+		/Scaling for Writes/
+		/Shared Database Infrastructure/
+		/CQRS/
+	/Caching/
+		/Client-Side, Proxy, and Server-Side Caching/
+		/Caching in HTTP/
+		/Caching for Writes/
+		/Caching for Resilience/
+		/Hiding the Origin/
+		/Keep It Simple/
+		/Cache Poisoning: A Cautionary Tale/
+	/Autoscaling/
+	/CAP Theorem/
+		/Sacrificing Consistency/
+		/Sacrificing Availability/
+		/Sacrificing Partition Tolerance?/
+		/AP or CP?/
+		/It's Not All or Nothing/
+		/And the Real World/
+	/Service Discovery/
+		/DNS/
+	/Dynamic Service Registries/
+		/Zookeeper/
+		/Consul/
+		/Eureka/
+		/Rolling Your Own/
+		/Don't Forget the Humans!/
+	/Documenting Services/
+		/Swagger/
+		/HAL and the HAL Browser/
+	/The Self-Describing System/
+	/Summary/
+
+/Bringing It All Together/
+	/Principles of Microservices/
+		/Model Around Business Concepts/
+		/Adopt a Culture of Automation/
+		/Hide Internal Implementation Details/
+		/Decentralize All the Things/
+		/Independently Deployable/
+		/Isolate Failure/
+		/Highly Observable/
+	/When Shouldn't You Use Microservices?/
+		[AS comment: shouldn't this have been at the start of the book?]
+	/Parting Words/

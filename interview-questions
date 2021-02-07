@@ -1,0 +1,40 @@
+Junior questions:
+	Experience with version control systems (VCS)? Git, TFS, Subversion, others?
+	Experience with SQL and db stuff?
+	Difference between statically and dynamically typed programming languages?
+	Difference between value/reference types? Heap vs stack?
+	Http verbs?
+
+Intermediate questions:
+	Knowledge of software design patterns? Creational, behavioral, structural
+	Knowledge of architectural design patterns? Onion/hexagonal, MVC, layers, etc
+	Knowledge of dependency injection? 
+
+Senior questions:
+	Async/threading/concurrency knowledge?
+	CI/CD Pipeline 
+
+Personal questions:
+	What do you do to ensure you continually have the latest knowledge and skillset?
+		Social media?
+		Personal projects?
+		Open source projects?
+		Whitepapers?
+
+Teamwork questions:
+	When do you know to ask for help?
+	What do you pay attention to when doing code reviews?
+	How would you handle a team member who doesn't pull their weight?
+	How would you handle a junior team member who needs very explicit walkthroughs of things?
+
+Organizational questions:
+	Current agile framework? What is the relationship to customers?
+	Current team structure? Team size, dev count, tester count, BA count. 
+
+QA Automation Engineer specific questions:
+	Experience with testing? Unit, Integration, UI, Contract, Performance, Mutation, 508, others?
+	How to demo automation to the customer and prove to them the value of test automation?
+	Test doubles - terminology, able to differentiate?
+	
+To ask when being interviewed:
+	What service-level agreements (SLAs) am I committing myself to if I accept this job?

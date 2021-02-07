@@ -1,0 +1,129 @@
+Playlist found here: https://www.youtube.com/playlist?list=PLUl4u3cNGP63UUkfL0onkxF6MYgVa04Fn
+
+Course:
+https://ocw.mit.edu/courses/sloan-school-of-management/15-s12-blockchain-and-money-fall-2018/index.htm
+
+Readings: https://ocw.mit.edu/courses/sloan-school-of-management/15-s12-blockchain-and-money-fall-2018/readings/
+
+Slides:
+https://ocw.mit.edu/courses/sloan-school-of-management/15-s12-blockchain-and-money-fall-2018/lecture-slides/
+
+Lecture 1: Introduction 
+Q: What is blockchain technology and why might it be a catalyst for change in the financial sector?
+
+Lecture 2: Money, Ledgers and Bitcoin
+Q1: What do the roles and characteristics of money mean historically and in today's digital economy?
+Q2: What is fiat currency, what are its ledgers and how it fits within the history of money?
+Q3: How does Bitcoin fit within the history of money, the emergence of the Internet and failed attempts of cryptographic payment systems?
+
+Lecture 3: Blockchain Basics and Cryptography
+Q1: What are the design features - cryptography, append-only timestamped blocks, distributed consensus algorithms, and networking - of Bitcoin, the first use case for blockchain technology?
+Q2: What are cryptographic hash functions, asymmetric cryptography and digital signatures? How are they utilizes to help make blockchain technology verifiable and immutable?
+Q3: What is the double-spending problem and how it is addressed by blockchain technology?
+
+Lecture 4: Blockchain Basics and Consensus
+Q1: What is the Byzantine Generals problem? How does proof-of-work and mining in Bitcoin address it? More generally, how does blockchain technology address it?
+Q2: What other consensus protocals are there? What are some of the tradeoffs of alternative consensus algorithms - proof-of-work, proof-of-stake, etc?
+Q3: How do economic incentives work within blockchain technology to maintain decentralized ledgers and avoid double spending? What are the incentives of consensus protocals and mining?
+
+Lecture 5: Blockchain Basics and Transactionas, UTXO and Script Code
+Q1: How does Bitcoin record transactions? What is unspent transaction output (UTXO)? What is script code embedded in each Bitcoin transaction and how flexible a programming language is it?
+A1: Transactions are formatted such that the Input is the structured data sat (Previous Transaction ID, Index, Signature) and the Output is the structured data set (Value, Public Key [i.e., Bitcoin Address]). Additionally, each transaction has a lock_time parameter which specifies the time at which the transcation may be considered finalized. The blockchain does not validate the transactions before the lock_time, unlike humans might choose to do.
+
+N1: "Turing-completeness" gives programming languages the ability to do loops inside code. Bitcoin scripting language DOES NOT allow this because it is not Turing complete.
+N2: 1 Bitcoin == 10^8 Satoshis (i.e., 100 million Satoshis)
+N3: 1 Ether == 10^9 Gas (i.e., 1 billion Gas)
+N4: "Output may not be used as a Transaction Input until another 100 Blocks" - this is an arbitrary hard-coded number chosen by Nakamoto.
+N5: Student raises the point that in March 2013, miners accidentally forked the blockchain, see here:
+https://freedom-to-tinker.com/2015/07/28/analyzing-the-2013-bitcoin-fork-centralized-decision-making-saved-the-day/
+
+Q2: As many design features pre-date Bitcoin, what was the novel innovation of Satoshi Nakamoto? 
+Addressing the double spending issue. 
+Nakamoto consensus - "the incentive structure [...] aligning everybody to create trusted signing parties [...]"
+Student points out legal differences between blockchains and Blockchain - the former have existed for decades.
+
+Q3: Who is Satoshi Nakamoto?
+
+Lecture 6: Smart Contracts and DApps
+
+Q1: What are smart contracts? How do they compare to traditional contracts? What are tokens?
+A1: Smart contract definition: "A set of promises, specified in digital form, including protocols within which the parties perform on these promises" - Nick Szabo, 1996
+
+Q2: What are smart contract platforms such as Ethereum? What generally distinguishes them from Bitcoin?
+N1: Ethereum and Bitcoin are both timestamped append-only ledgers.
+N2: Ethereum and Bitcoin are both Proof of Work and have their own native currency and network.
+N3: Ethereum does not perform UTXO process like Bitcoin - instead does "state transitions." It is account-based rather than transaction-based.
+N4: Ethereums scripting language is Turing-complete, unlike Bitcoins.
+N5: Ethereum block time is 14 seconds vs Bitcoin 10 minutes.
+
+Q3: What are decentralized applications (DApps)? What has been the usage and why haven't any DApps yet received wide consumer adoption?
+N6: Smart contract potential use cases according to Digital Chamber of Commerce:
+* Digital Identity
+* Records
+* Securities
+* Trade Finance
+* Derivatives
+* Financial Data
+* Mortgages
+* Land Title
+* Supply Chain
+* Auto Insurance
+* Clinical Trials
+* Cancer Research
+
+Lecture 7: Technical Challenges
+Challenges: performance, scability
+
+Q1: How critical are the technical and commercial challenges - scalability, efficiency, privacy, security, interoperability - of current blockchain technology?
+
+Q2: What are the possible tradeoffs of decentralization, scalability and security? What are tradeoffs of consensus software updates, governance and so-called 'hard forks'?
+
+Q3: What might current work - Layer 2 applications, zero-knowledge proofs, alternative consensus algorithms - do to address current commercial challenges?
+
+Vitalik Buterin's Trilemma: Scalability vs Decentralization vs Security
+
+N1: Proof of Work energy consumption approx 200 million Kwh/day - approx the same as 7 million US homes. This is 0.33% of the world's electricity. Approx the same energy consumption as Austria. For comparison, the US financial sector is 7.5% of our economy and costs 1.5 trillion dollars.
+
+N2: Alternative consensus protocols include randomizing or delegating the validation of the next block.
+
+N3: Randomized selection may be based upon:
+* Proof of Stake - stake in native currency
+* Proof of Activity - hybrid of POW and POS
+* Proof of Burn - validation comes with burning of coins
+* Proof of Capacity (Storage or Space) - based upon hardware space
+
+TODO: rewatch this lecture
+
+Lecture 8: Public Policy
+
+Lecture 9: Permissioned Systems
+
+Lecture 10: Financial System Challenges and Opportunities
+
+Lecture 11: Blockchain Economics
+
+Lecture 12: Assessing Use Cases
+
+Lecture 13: Payments, Part 1
+
+Lecture 14: Payments, Part 2
+
+Lecture 15: Central Banks and Commercial Banking, Part 1
+
+Lecture 16: Central Banks and Commercial Banking, Part 2
+
+Lecture 17: Secondary Markets and Crypto-Exchanges
+
+Lecture 18: MISSING?
+
+Lecture 19: Primary Markets, ICOs and Venture Capital 1
+
+Lecture 20: Primary Markets, ICOs and Venture Capital 2
+
+Lecture 21: Post Trade Clearing, Settlement and Processing
+
+Lecture 22: Trade Finance and Supply Chain
+
+Lecture 23: Digital ID
+
+Lecture 24: Conclusion
